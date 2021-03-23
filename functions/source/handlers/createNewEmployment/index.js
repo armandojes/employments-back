@@ -23,6 +23,7 @@ const createNewEmployment = async (data, context) => {
     const { uid } = await auth.createUser(secureData)
     await firestore.doc(`users/${uid}`).set({
       ...secureData,
+      createdAt: new Date(),
       type: 'employment'
     })
   } catch (error) {

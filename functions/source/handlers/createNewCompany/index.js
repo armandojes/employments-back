@@ -1,0 +1,95 @@
+import validators from '../../helpers/validators'
+import { auth, firestore } from '../../firestore'
+import { errorsDic } from '../../../constants'
+
+const createNewCompany = async (data) => {
+  const secureData = {
+    companyAddress: data.companyAddress,
+    companyEmail: data.companyEmail,
+    companyName: data.companyName,
+    companyPhone: data.companyPhone,
+    companyRFC: data.companyRFC,
+    companyRazonSocial: data.companyRazonSocial,
+    userEmail: data.userEmail,
+    userFullName: data.userFullName,
+    password: data.password
+  }
+
+  if (validators.address(secureData.companyAddress)) {
+    return { status: 'error', errorMessage: validators.address(secureData.companyAddress) }
+  }
+
+  if (validators.email(secureData.companyEmail)) {
+    return { status: 'error', errorMessage: validators.email(secureData.companyEmail) }
+  }
+
+  if (validators.companyName(secureData.companyName)) {
+    return { status: 'error', errorMessage: validators.companyName(secureData.companyName) }
+  }
+
+  if (validators.phone(secureData.companyPhone)) {
+    return { status: 'error', errorMessage: validators.phone(secureData.companyPhone) }
+  }
+
+  if (validators.rfc(secureData.companyRFC)) {
+    return { status: 'error', errorMessage: validators.rfc(secureData.companyRFC) }
+  }
+
+  if (validators.razonSocial(secureData.companyRazonSocial)) {
+    return { status: 'error', errorMessage: validators.razonSocial(secureData.companyRazonSocial) }
+  }
+
+  if (validators.email(secureData.userEmail)) {
+    return { status: 'error', errorMessage: validators.email(secureData.userEmail) }
+  }
+
+  if (validators.userFullName(secureData.userFullName)) {
+    return { status: 'error', errorMessage: validators.userFullName(secureData.userFullName) }
+  }
+
+  if (validators.password(secureData.password)) {
+    return { status: 'error', errorMessage: validators.password(secureData.password) }
+  }
+
+  if (secureData.password !== data.repassword) {
+    return { status: 'error', errorMessage: 'las contraseñas no coinciden' }
+  }
+
+  try {
+    const { uid } = await auth.createUser({ email: secureData.userEmail, password: secureData.password })
+    const { id: companyId } = await firestore.collection('companies').add({
+      address: data.companyAddress,
+      email: data.companyEmail,
+      name: data.companyName,
+      phone: data.companyPhone,
+      rfc: data.companyRFC,
+      razonSocial: data.companyRazonSocial,
+      createdAt: new Date()
+    })
+
+    await firestore.doc(`users/${uid}`).set({
+      email: secureData.userEmail,
+      name: secureData.userFullName,
+      fullName: secureData.userFullName,
+      password: secureData.password,
+      type: 'companyManager',
+      createdAt: new Date(),
+      companyId
+    })
+
+    const querySnapshot = await firestore.collection('requestNewCompanies').where('userEmail', '==', data.userEmail).get()
+    for (const document of querySnapshot.docs) {
+      await document.ref.delete()
+    }
+
+    return { status: 'success' }
+  } catch (error) {
+    return {
+      ...error,
+      errorMessage: errorsDic[error.errorInfo.code] || error.errorInfo.code,
+      status: 'error'
+    }
+  }
+}
+
+export default createNewCompany
