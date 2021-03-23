@@ -66,7 +66,7 @@ const createNewCompany = async (data) => {
       type: 'companyManager',
       createdAt: new Date(),
       company: {
-        adress: data.companyAddress,
+        address: data.companyAddress,
         email: data.companyEmail,
         name: data.companyName,
         phone: data.companyPhone,
