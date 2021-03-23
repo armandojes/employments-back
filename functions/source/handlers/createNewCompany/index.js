@@ -57,15 +57,6 @@ const createNewCompany = async (data) => {
 
   try {
     const { uid } = await auth.createUser({ email: secureData.userEmail, password: secureData.password })
-    const { id: companyId } = await firestore.collection('companies').add({
-      address: data.companyAddress,
-      email: data.companyEmail,
-      name: data.companyName,
-      phone: data.companyPhone,
-      rfc: data.companyRFC,
-      razonSocial: data.companyRazonSocial,
-      createdAt: new Date()
-    })
 
     await firestore.doc(`users/${uid}`).set({
       email: secureData.userEmail,
@@ -74,7 +65,14 @@ const createNewCompany = async (data) => {
       password: secureData.password,
       type: 'companyManager',
       createdAt: new Date(),
-      companyId
+      company: {
+        adress: data.companyAddress,
+        email: data.companyEmail,
+        name: data.companyName,
+        phone: data.companyPhone,
+        rfc: data.companyRFC,
+        razonSocial: data.companyRazonSocial
+      }
     })
 
     const querySnapshot = await firestore.collection('requestNewCompanies').where('userEmail', '==', data.userEmail).get()
