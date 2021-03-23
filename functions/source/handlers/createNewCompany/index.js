@@ -59,7 +59,7 @@ const createNewCompany = async (data) => {
     const { uid } = await auth.createUser({ email: secureData.userEmail, password: secureData.password })
 
     await firestore.doc(`users/${uid}`).set({
-      email: secureData.userEmail,
+      email: secureData.userEmail.toString().toLowerCase(),
       name: secureData.userFullName,
       fullName: secureData.userFullName,
       password: secureData.password,
@@ -67,7 +67,7 @@ const createNewCompany = async (data) => {
       createdAt: new Date(),
       company: {
         address: data.companyAddress,
-        email: data.companyEmail,
+        email: data.companyEmail.toString().toLowerCase(),
         name: data.companyName,
         phone: data.companyPhone,
         rfc: data.companyRFC,
