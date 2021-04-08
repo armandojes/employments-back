@@ -13,7 +13,7 @@ const deleteCompany = async (data) => {
 
     // delete appoimtments for company
     try {
-      const snaphotQeury = await firestore.collection('appointments').where('company.id', '==', 'companyId').get()
+      const snaphotQeury = await firestore.collection('appointments').where('company.id', '==', companyId).get()
       for (const doc of snaphotQeury.docs) {
         await doc.ref.delete()
       }
