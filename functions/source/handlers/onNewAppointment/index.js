@@ -16,7 +16,7 @@ const onNewAppointment = async (snapshot) => {
     const companyData = companyDatSnapshot.data()
 
     const htmlForCompany = newAppointmentForCompany(id, data.stringDate, data.patientName, data.stringTime, branchData.name, branchData.address, `https://iml-empresas.web.app/appointment/${id}`)
-    const htmlForOwners = newAppointmentForOwners(id, data.stringDate, data.patientName, data.stringTime, branchData.name, branchData.address, `https://iml-empresas.web.app/appointment/${id}`)
+    const htmlForOwners = newAppointmentForOwners(id, data.stringDate, data.patientName, data.stringTime, branchData.name, branchData.address, 'https://iml-empresas.web.app/dashboard/appointments')
 
     await sendEmail(companyData.email, 'Confirmación de cita', htmlForCompany) // company
 
