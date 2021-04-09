@@ -141,7 +141,7 @@ const companyAccountActived = (userFullName, userPassword, userEmail, companyNam
                     <td align="center" valign="top" style="padding:0;Margin:0;width:560px"> 
                      <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"> 
                        <tr> 
-                        <td align="center" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#1A355F;font-size:18px">${userPassword}<br>${userEmail}</p></td> 
+                        <td align="center" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#1A355F;font-size:18px">Correo: ${userEmail}<br>  Contraseña: ${userPassword}</p></td> 
                        </tr> 
                      </table></td> 
                    </tr> 
