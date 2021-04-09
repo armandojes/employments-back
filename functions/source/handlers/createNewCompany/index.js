@@ -1,6 +1,8 @@
 import validators from '../../helpers/validators'
 import { auth, firestore } from '../../firestore'
 import { errorsDic } from '../../../constants'
+import sendEmail from '../../actions/sendEmail'
+import companyAccoutActived from '../../emailTemplates/companyAccoutActived'
 
 const createNewCompany = async (data) => {
   const secureData = {
@@ -75,9 +77,26 @@ const createNewCompany = async (data) => {
       }
     })
 
+    // delete company request
     const querySnapshot = await firestore.collection('requestNewCompanies').where('userEmail', '==', data.userEmail).get()
     for (const document of querySnapshot.docs) {
       await document.ref.delete()
+    }
+
+    // send email
+    if (data.sendEmail) {
+      const html = companyAccoutActived(
+        secureData.userFullName,
+        secureData.password,
+        secureData.userEmail.toString().toLowerCase(),
+        data.companyName,
+        data.companyEmail.toString().toLowerCase(),
+        data.companyPhone,
+        data.companyAddress,
+        data.companyRFC,
+        data.companyRazonSocial
+      )
+      await sendEmail(secureData.userEmail.toString().toLowerCase(), 'Cuenta activada', html)
     }
 
     return { status: 'success' }

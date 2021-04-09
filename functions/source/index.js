@@ -6,6 +6,7 @@ import createNewCompany from './handlers/createNewCompany'
 import deleteCompany from './handlers/deleteCompany'
 import updateCompany from './handlers/updateCompany'
 import onNewAppointment from './handlers/onNewAppointment'
+import onNewComanyRequestCreated from './handlers/onNewCompanyRequest'
 
 exports.createNewEmployment = https.onCall(createNewEmployment)
 exports.deleteEmployment = https.onCall(deleteEmployment)
@@ -15,3 +16,4 @@ exports.deleteCompany = https.onCall(deleteCompany)
 exports.updateCompany = https.onCall(updateCompany)
 
 exports.onAppointmentCreate = firestore.document('appointments/{appointmentId}').onCreate(onNewAppointment)
+exports.onNewComanyRequestCreated = firestore.document('requestNewCompanies/{companyId}').onCreate(onNewComanyRequestCreated)
