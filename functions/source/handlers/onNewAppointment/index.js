@@ -1,5 +1,4 @@
-import newAppointmentForCompany from '../../emailTemplates/newAppointmentForCompany'
-import newAppointmentForOwners from '../../emailTemplates/newAppointmentForOwners'
+import newAppointment from '../../emailTemplates/newAppointment'
 import sendEmail from '../../actions/sendEmail'
 import firestore from '../../firestore'
 import { log } from 'firebase-functions/lib/logger'
@@ -15,10 +14,23 @@ const onNewAppointment = async (snapshot) => {
     const companyDatSnapshot = await firestore.doc(`users/${data.company.id}`).get()
     const companyData = companyDatSnapshot.data()
 
-    const htmlForCompany = newAppointmentForCompany(id, data.stringDate, data.patientName, data.stringTime, branchData.name, branchData.address, `https://iml-empresas.web.app/appointment/${id}`)
-    const htmlForOwners = newAppointmentForOwners(id, data.stringDate, data.patientName, data.stringTime, branchData.name, branchData.address, 'https://iml-empresas.web.app/dashboard/appointments')
+    const studies = data.studies
+    if (data.otherStudy) {
+      studies.push({ title: data.otherStudy, price: 0, indications: null })
+    }
 
-    await sendEmail(companyData.email, 'Confirmación de cita', htmlForCompany) // company
+    const htmlForEmails = newAppointment(
+      id,
+      data.stringDate,
+      data.patientName,
+      data.stringTime,
+      branchData.name,
+      branchData.address,
+      `https://iml-empresas.web.app/appointment/${id}`,
+      studies
+    )
+
+    await sendEmail(companyData.email, 'Confirmación de cita', htmlForEmails) // company
 
     const allUsersSnap = await firestore.collection('users').where('type', '!=', 'companyManager').get()
     const allUsers = allUsersSnap.docs.map((doc) => doc.data())
@@ -26,13 +38,13 @@ const onNewAppointment = async (snapshot) => {
     // send email for branchOwner
     const branchOwners = allUsers.filter((user) => user.branchId === data.branch)
     for (const branchOwner of branchOwners) {
-      await sendEmail(branchOwner.email, 'Nueva cita', htmlForOwners)
+      await sendEmail(branchOwner.email, 'Nueva cita', htmlForEmails)
     }
 
     // send email for admins
     const admins = allUsers.filter((user) => user.type === 'admin')
     for (const admin of admins) {
-      await sendEmail(admin.email, 'Nueva cita', htmlForOwners)
+      await sendEmail(admin.email, 'Nueva cita', htmlForEmails)
     }
   } catch (error) {
     log('__error__', error)
