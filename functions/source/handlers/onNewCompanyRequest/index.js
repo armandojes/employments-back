@@ -1,15 +1,12 @@
-import firestore from '../../firestore'
 import newCompanyRegistered from '../../emailTemplates/newCompanyRegistered'
 import sendEmail from '../../actions/sendEmail'
 import { toLargeStringDate } from '../../helpers/dates'
 import { log } from 'firebase-functions/lib/logger'
+import { emailsForNotifications } from '../../../constants'
 
 const onNewComanyRequestCreated = async (snapshot) => {
   try {
     const data = snapshot.data()
-
-    const adminsSnap = await firestore.collection('users').where('type', '==', 'admin').get()
-    const admins = adminsSnap.docs.map((doc) => doc.data())
 
     const stringDate = toLargeStringDate(data.createdAt.toDate())
     const html = newCompanyRegistered(
@@ -24,8 +21,8 @@ const onNewComanyRequestCreated = async (snapshot) => {
       data.userFullName
     )
 
-    for (const admin of admins) {
-      await sendEmail(admin.email, 'Nueva empresa registrada', html)
+    for (const email of emailsForNotifications) {
+      await sendEmail(email, 'Nueva empresa registrada', html)
     }
   } catch (error) {
     log('__Error__', error)

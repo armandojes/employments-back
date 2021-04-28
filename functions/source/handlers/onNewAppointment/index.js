@@ -2,6 +2,7 @@ import newAppointment from '../../emailTemplates/newAppointment'
 import sendEmail from '../../actions/sendEmail'
 import firestore from '../../firestore'
 import { log } from 'firebase-functions/lib/logger'
+import { emailsForNotifications } from '../../../constants'
 
 const onNewAppointment = async (snapshot) => {
   try {
@@ -41,10 +42,8 @@ const onNewAppointment = async (snapshot) => {
       await sendEmail(branchOwner.email, 'Nueva cita', htmlForEmails)
     }
 
-    // send email for admins
-    const admins = allUsers.filter((user) => user.type === 'admin')
-    for (const admin of admins) {
-      await sendEmail(admin.email, 'Nueva cita', htmlForEmails)
+    for (const email of emailsForNotifications) {
+      await sendEmail(email, 'Nueva cita', htmlForEmails)
     }
   } catch (error) {
     log('__error__', error)
