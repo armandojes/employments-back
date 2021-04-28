@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
 import validators from '../../helpers/validators'
 import { auth, firestore } from '../../firestore'
 import { errorsDic } from '../../../constants'
 import sendEmail from '../../actions/sendEmail'
 import companyAccoutActived from '../../emailTemplates/companyAccoutActived'
-import { log } from 'firebase-functions/lib/logger'
 
 const createNewCompany = async (data, context) => {
   const secureData = {

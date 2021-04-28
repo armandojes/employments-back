@@ -7,7 +7,7 @@ export const emailAcount = {
   email: 'admon.intermedic@gmail.com'
 }
 
-export const emailsForNotifications = () => [
+export const emailsForNotifications = [
   'empresas@laboratoriosiml.com',
   'atencionempresasiml@gmail.com'
 ]
