@@ -73,7 +73,8 @@ const createNewCompany = async (data, context) => {
         name: data.companyName,
         phone: data.companyPhone,
         rfc: data.companyRFC,
-        razonSocial: data.companyRazonSocial
+        razonSocial: data.companyRazonSocial,
+        customId: data.companyCustomId
       }
     })
 

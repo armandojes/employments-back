@@ -73,7 +73,7 @@ const updateCompany = async (data) => {
         rfc: data.companyRFC,
         razonSocial: data.companyRazonSocial
       }
-    })
+    }, { merge: true })
 
     return { status: 'success' }
   } catch (error) {
