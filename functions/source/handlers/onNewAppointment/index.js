@@ -15,9 +15,12 @@ const onNewAppointment = async (snapshot) => {
     const companyDatSnapshot = await firestore.doc(`users/${data.company.id}`).get()
     const companyData = companyDatSnapshot.data()
 
-    const studies = data.studies
+    let studies = data.studies
     if (data.otherStudy) {
       studies.push({ title: data.otherStudy, price: 0, indications: null })
+    }
+    if (data.profiles && data.profiles.length) {
+      studies = [...studies, ...data.profiles]
     }
 
     const htmlForEmails = newAppointment(
@@ -27,8 +30,9 @@ const onNewAppointment = async (snapshot) => {
       data.stringTime,
       branchData.name,
       branchData.address,
-      `https://iml-empresas.web.app/appointment/${id}`,
-      studies
+      studies,
+      branchData.mapPicture || null,
+      branchData.maps || null
     )
 
     await sendEmail(companyData.email, 'Confirmación de cita', htmlForEmails) // company

@@ -5,12 +5,13 @@
  * @param {String} time
  * @param {String} branch
  * @param {String} address
- * @param {String} url
- * @param {Array} studies
+ * @param {Array} studiesAndProfiles
+ * @param {String} mapPicture
+ * @param {String} mapUrl
  * @returns {String} hmtl for email
  */
 
-const newAppointment = (id, date, patient, time, branch, address, url, studies) => {
+const newAppointment = (id, date, patient, time, branch, address, studiesAndProfiles, mapPicture, mapUrl) => {
   return `
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -176,7 +177,7 @@ const newAppointment = (id, date, patient, time, branch, address, url, studies) 
                         <td align="center" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:25px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#1A355F;font-size:18px"><strong>Estudios</strong></p></td> 
                        </tr> 
 
-                       ${studies.map((s) => (
+                       ${studiesAndProfiles.map((s) => (
                          `
                           <tr> 
                           <td align="center" class="es-m-txt-c" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#0FAFAB;font-size:18px"><b>${s.title}</b></p></td> 
@@ -186,14 +187,25 @@ const newAppointment = (id, date, patient, time, branch, address, url, studies) 
 
                      </table></td> 
                    </tr>
+
+                   ${!mapPicture ? '' : `
+                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"> 
+                      <tr> 
+                        <td align="center" style="padding:30px;Margin:0;font-size:0px"><img class="adapt-img" src="${mapPicture}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="500"></td> 
+                      </tr> 
+                    </table>
+                   `}
+                   
+                   ${mapUrl ? `
                    <tr> 
-                    <td align="center" valign="top" style="padding:0;Margin:0;width:560px"> 
-                     <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"> 
-                       <tr> 
-                        <td align="center" style="padding:30px;Margin:0"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#071F4F;border-width:0px;display:inline-block;border-radius:5px;width:auto"><a href="${url}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:16px;border-style:solid;border-color:#071F4F;border-width:10px 40px;display:inline-block;background:#071F4F;border-radius:5px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center">Ver cita</a></span></td> 
-                       </tr> 
-                     </table></td> 
-                   </tr> 
+                   <td align="center" valign="top" style="padding:0;Margin:0;width:560px"> 
+                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"> 
+                      <tr> 
+                       <td align="center" style="padding:30px;Margin:0"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#071F4F;border-width:0px;display:inline-block;border-radius:5px;width:auto"><a href="${mapUrl}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:16px;border-style:solid;border-color:#071F4F;border-width:10px 40px;display:inline-block;background:#071F4F;border-radius:5px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center">Ver mapa</a></span></td> 
+                      </tr> 
+                    </table></td> 
+                  </tr>
+                   ` : ''}
 
                  </table></td> 
                </tr> 
