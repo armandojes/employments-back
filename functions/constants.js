@@ -3,11 +3,12 @@ export const errorsDic = {
 }
 
 export const emailAcount = {
-  transporter: 'smtps://admon.intermedic:Inter2020+@smtp.gmail.com:465',
-  email: 'admon.intermedic@gmail.com'
+  transporter: 'smtps://noreplyimllab:Jesuselpoeta4772@smtp.gmail.com:465',
+  email: 'noreplyimllab@gmail.com'
 }
 
 export const emailsForNotifications = [
   'empresas@laboratoriosiml.com',
-  'atencionempresasiml@gmail.com'
+  'atencionempresasiml@gmail.com',
+  'noreplayiml@gmail.com'
 ]
