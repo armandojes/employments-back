@@ -3,8 +3,8 @@ export const errorsDic = {
 }
 
 export const emailAcount = {
-  transporter: 'smtps://noreplyimllab:Jesuselpoeta4772@smtp.gmail.com:465',
-  email: 'noreplyimllab@gmail.com'
+  transporter: 'smtps://imllabsnoreply:jrxcwgfyflxkuovb@smtp.gmail.com:465',
+  email: 'imllabsnoreply@gmail.com'
 }
 
 export const emailsForNotifications = [
